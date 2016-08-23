@@ -18,12 +18,6 @@ module.exports = function include_plugin(md, basedir) {
     while ((cap = INCLUDE_RE.exec(src))) {
       filePath = path.resolve(rootdir, cap[1]);
 
-      // check if circular reference
-      indexOfCircularRef = filesProcessed.indexOf(filePath);
-      if (indexOfCircularRef !== -1) {
-        throw new Error('Circular reference between ' + filePath + ' and ' + filesProcessed[indexOfCircularRef]);
-      }
-
       // replace include by file content
       mdSrc = _replaceIncludeByContent(fs.readFileSync(filePath, 'utf8'), path.dirname(filePath), filePath);
       src = src.slice(0, cap.index) + mdSrc + src.slice(cap.index + cap[0].length, src.length);
